@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Register — Dkp Shop{% endblock %}
+{% block extra_css %}
+
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">LUXE</div>
+      <p class="auth-sub">Create your account</p>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+          <label class="form-label">{{ field.label }}</label>
+          <input
+            type="{{ field.field.widget.input_type }}"
+            name="{{ field.html_name }}"
+            class="form-input"
+            {% if field.field.required %}required{% endif %}
+            {% if forloop.first %}autofocus{% endif %}
+            placeholder="{{ field.label }}"
+          />
+          {% if field.help_text %}<p class="field-hint">{{ field.help_text }}</p>{% endif %}
+          {% if field.errors %}<p class="form-error">{{ field.errors.0 }}</p>{% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:0.5rem; padding:12px;">Create Account</button>
+      </form>
+
+      <p class="auth-footer">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

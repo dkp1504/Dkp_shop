@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Payment — Dkp Shop{% endblock %}
+{% block extra_head %}
+
+{% endblock %}
+{% block content %}
+<div class="container section">
+  <div class="page-header" style="padding-top:1rem;">
+    <h1>Payment</h1>
+  </div>
+
+  <div class="steps" style="margin-bottom:2.5rem;">
+    <div class="step done"><span class="step-num">✓</span> Cart</div>
+    <div class="step-divider"></div>
+    <div class="step done"><span class="step-num">✓</span> Details</div>
+    <div class="step-divider"></div>
+    <div class="step active"><span class="step-num">3</span> Payment</div>
+    <div class="step-divider"></div>
+    <div class="step inactive"><span class="step-num">4</span> Done</div>
+  </div>
+
+  <div class="payment-wrap">
+    <div class="order-id-badge">Order #{{ order.id }}</div>
+
+    <div class="payment-card">
+      <h2 class="payment-card-title">Payment Method</h2>
+      <div class="pay-method">
+        <div class="pay-opt selected" onclick="selectPay(this)">
+          <div class="pay-opt-icon">💳</div>Card
+        </div>
+        <div class="pay-opt" onclick="selectPay(this)">
+          <div class="pay-opt-icon">📱</div>UPI
+        </div>
+        <div class="pay-opt" onclick="selectPay(this)">
+          <div class="pay-opt-icon">🏦</div>Net Banking
+        </div>
+        <div class="pay-opt" onclick="selectPay(this)">
+          <div class="pay-opt-icon">💵</div>COD
+        </div>
+      </div>
+
+      <div class="mock-card">
+        <div style="font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted);">Card Number</div>
+        <div class="mock-card-number">4242  4242  4242  4242</div>
+        <div class="mock-card-footer">
+          <div><div style="font-size:10px;">EXPIRES</div>12/27</div>
+          <div><div style="font-size:10px;">CVV</div>•••</div>
+          <div><div style="font-size:10px;">NAME</div>{{ order.full_name|upper }}</div>
+        </div>
+      </div>
+      <p style="font-size:11px; color:var(--text-dim); text-align:center; letter-spacing:0.04em;">
+        ⚠ Demo mode — no real payment will be processed
+      </p>
+
+      <div style="margin-top:1.5rem;">
+        {% for item in order.items.all %}
+        <div style="display:flex; justify-content:space-between; font-size:13px; padding:6px 0; color:var(--text-muted);">
+          <span>{{ item.product_name }} × {{ item.quantity }}</span>
+          <span>₹{{ item.subtotal }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="total-line">
+        <span class="total-label">Total to Pay</span>
+        <span class="total-val">₹{{ order.total }}</span>
+      </div>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary btn-full" style="padding:15px; font-size:14px;">
+        Confirm &amp; Pay ₹{{ order.total }}
+      </button>
+    </form>
+  </div>
+</div>
+<script>
+  function selectPay(el) {
+    document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+</script>
+{% endblock %}

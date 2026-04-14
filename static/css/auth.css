@@ -1,0 +1,18 @@
+
+  .auth-wrap { max-width: 400px; margin: 0 auto; padding: 4rem 0; }
+  .auth-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 2.5rem; }
+  .auth-logo { font-family: var(--font-display); font-size: 2rem; color: var(--accent); text-align: center; margin-bottom: 0.5rem; letter-spacing: 0.1em; }
+  .auth-sub { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 2rem; }
+  .auth-footer { text-align: center; margin-top: 1.5rem; font-size: 13px; color: var(--text-muted); }
+  .auth-footer a { color: var(--accent); }
+  .form-errors { background: rgba(224,82,82,.08); border: 1px solid var(--danger); border-radius: var(--radius); padding: 10px 14px; margin-bottom: 1.2rem; font-size: 13px; color: var(--danger); }
+
+  /* register css */
+ 
+  .auth-wrap { max-width: 420px; margin: 0 auto; padding: 4rem 0; }
+  .auth-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 2.5rem; }
+  .auth-logo { font-family: var(--font-display); font-size: 2rem; color: var(--accent); text-align: center; margin-bottom: 0.5rem; letter-spacing: 0.1em; }
+  .auth-sub { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 2rem; }
+  .auth-footer { text-align: center; margin-top: 1.5rem; font-size: 13px; color: var(--text-muted); }
+  .auth-footer a { color: var(--accent); }
+  .field-hint { font-size: 11px; color: var(--text-dim); margin-top: 4px; }

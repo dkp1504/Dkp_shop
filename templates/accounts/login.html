@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login — Dkp Shop{% endblock %}
+{% block extra_css %}
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">Dkp Shop</div>
+      <p class="auth-sub">Sign in to your account</p>
+
+      {% if form.non_field_errors %}
+      <div class="form-errors">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" name="username" class="form-input" required autofocus placeholder="your_username" />
+          {% if form.username.errors %}<p class="form-error">{{ form.username.errors.0 }}</p>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-input" required placeholder="••••••••" />
+          {% if form.password.errors %}<p class="form-error">{{ form.password.errors.0 }}</p>{% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:0.5rem; padding:12px;">Sign In</button>
+      </form>
+
+      <p class="auth-footer">Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

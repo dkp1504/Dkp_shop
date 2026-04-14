@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cart — Dkp Shop{% endblock %}
+{% block extra_css %}
+{% endblock %}
+{% block content %}
+<div class="container section">
+  <div class="page-header" style="padding-top:1rem;">
+    <h1>Your Cart</h1>
+    <p>{{ cart.item_count }} item{{ cart.item_count|pluralize }}</p>
+  </div>
+
+  {% if cart.items.count == 0 %}
+  <div class="empty-cart">
+    <div class="empty-cart-icon">◻</div>
+    <h2>Your cart is empty</h2>
+    <p>Add some beautiful products to get started.</p>
+    <a href="{% url 'product_list' %}" class="btn btn-primary">Continue Shopping</a>
+  </div>
+  {% else %}
+  <div class="cart-layout">
+    <!-- ITEMS -->
+    <div>
+      {% for item in cart.items.all %}
+      <div class="cart-item">
+        <div class="cart-item-img">
+          {% if item.product.image %}
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" />
+          {% else %}
+            <div class="cart-item-placeholder">✦</div>
+          {% endif %}
+        </div>
+        <div>
+          <p class="cart-item-cat">{{ item.product.category.name }}</p>
+          <p class="cart-item-name">{{ item.product.name }}</p>
+          <p class="cart-item-price">₹{{ item.product.price }} each</p>
+          <form method="post" action="{% url 'update_quantity' item.id %}" class="qty-form" style="margin-top:8px;">
+            {% csrf_token %}
+            <input type="number" name="quantity" value="{{ item.quantity }}" min="0" max="{{ item.product.stock }}" class="qty-input" />
+            <button type="submit" class="btn btn-outline btn-sm">Update</button>
+          </form>
+        </div>
+        <div style="text-align:right;">
+          <p style="font-size:1.05rem; color:var(--accent); font-weight:500;">₹{{ item.subtotal }}</p>
+          <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm" style="margin-top:8px;">Remove</a>
+        </div>
+      </div>
+      {% endfor %}
+
+      <div style="margin-top:1.5rem;">
+        <a href="{% url 'product_list' %}" class="btn btn-outline btn-sm">← Continue Shopping</a>
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-card">
+      <h2 class="summary-title">Order Summary</h2>
+      {% for item in cart.items.all %}
+      <div class="summary-row">
+        <span style="color:var(--text-muted)">{{ item.product.name }} × {{ item.quantity }}</span>
+        <span>₹{{ item.subtotal }}</span>
+      </div>
+      {% endfor %}
+      <div class="summary-row">
+        <span style="color:var(--text-muted)">Shipping</span>
+        <span style="color:var(--success)">Free</span>
+      </div>
+      <div class="summary-total">
+        <span class="summary-total-label">Total</span>
+        <span class="summary-total-val">₹{{ cart.total }}</span>
+      </div>
+      <a href="{% url 'checkout' %}" class="btn btn-primary btn-full" style="margin-top:1.5rem; padding:13px;">
+        Proceed to Checkout
+      </a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

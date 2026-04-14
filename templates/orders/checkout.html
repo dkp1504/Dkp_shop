@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Checkout — Dkp Shop{% endblock %}
+{% block extra_css %}{% endblock %}
+{% block content %}
+<div class="container section">
+  <div class="page-header" style="padding-top:1rem;">
+    <h1>Checkout</h1>
+  </div>
+
+  <div class="steps">
+    <div class="step done"><span class="step-num">✓</span> Cart</div>
+    <div class="step-divider"></div>
+    <div class="step active"><span class="step-num">2</span> Details</div>
+    <div class="step-divider"></div>
+    <div class="step inactive"><span class="step-num">3</span> Payment</div>
+    <div class="step-divider"></div>
+    <div class="step inactive"><span class="step-num">4</span> Done</div>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="checkout-grid">
+      <div>
+        <div class="form-section">
+          <h2 class="form-section-title">Shipping Details</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input type="text" name="full_name" class="form-input" required placeholder="Your full name" value="{{ user.get_full_name }}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" class="form-input" required placeholder="email@example.com" value="{{ user.email }}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Address</label>
+            <textarea name="address" class="form-input" rows="3" required placeholder="House / Flat no., Street, Landmark"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">City</label>
+              <input type="text" name="city" class="form-input" required placeholder="City" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Postal Code</label>
+              <input type="text" name="postal_code" class="form-input" required placeholder="PIN Code" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER PREVIEW -->
+      <div class="order-preview">
+        <h2 class="order-preview-title">Your Order</h2>
+        {% for item in cart.items.all %}
+        <div class="preview-item">
+          <div class="preview-item-img">
+            {% if item.product.image %}<img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" />
+            {% else %}<div class="preview-item-ph">✦</div>{% endif %}
+          </div>
+          <div style="flex:1">
+            <p class="preview-item-name">{{ item.product.name }}</p>
+            <p class="preview-item-price">{{ item.quantity }} × ₹{{ item.product.price }}</p>
+          </div>
+          <span style="font-size:13px;">₹{{ item.subtotal }}</span>
+        </div>
+        {% endfor %}
+        <div class="preview-total">
+          <span style="font-family:var(--font-display); font-size:1.1rem;">Total</span>
+          <span style="color:var(--accent); font-size:1.2rem; font-weight:500;">₹{{ cart.total }}</span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:1.5rem; padding:13px;">
+          Continue to Payment →
+        </button>
+        <p style="font-size:11px; color:var(--text-dim); text-align:center; margin-top:1rem; letter-spacing:0.04em;">
+          Free shipping · Secure checkout
+        </p>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

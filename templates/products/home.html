@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dkp Shop — Premium Shopping{% endblock %}
+{% block extra_css %}
+{% endblock %}
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-tag">New Collection 2026</div>
+      <h1>Discover<br><em>Curated</em><br>Excellence</h1>
+      <p class="hero-desc">Premium products handpicked for the discerning customer. Quality over quantity, always.</p>
+      <div class="hero-actions">
+        <a href="{% url 'product_list' %}" class="btn btn-primary">Shop Now</a>
+        <a href="{% url 'product_list' %}" class="btn btn-outline">View Collection</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      {% for cat in categories|slice:":4" %}
+      <div class="hero-card">
+        <div class="hero-card-icon">
+        {% if cat.name == "Apparel" %}👕
+        {% elif cat.name == "Accessories" %}💎
+        {% elif cat.name == "Home" %}🏠
+        {% else %}✨{% endif %}
+        </div>
+        <h3>{{ cat.name }}</h3>
+        <p>{{ cat.products.count }} items</p>
+      </div>
+      {% empty %}
+      <div class="hero-card"><div class="hero-card-icon">👕</div><h3>Apparel</h3><p>Premium wear</p></div>
+      <div class="hero-card"><div class="hero-card-icon">💎</div><h3>Accessories</h3><p>Fine craft</p></div>
+      <div class="hero-card"><div class="hero-card-icon">🏠</div><h3>Home</h3><p>Luxury living</p></div>
+      <div class="hero-card"><div class="hero-card-icon">☀️</div><h3>Lifestyle</h3><p>Curated picks</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<div class="features">
+  <div class="feature-item">
+    <div class="feature-icon">🚚</div>
+    <h3>Free Shipping</h3>
+    <p>On all orders above ₹999. Fast and reliable delivery to your doorstep.</p>
+  </div>
+  <div class="feature-item">
+    <div class="feature-icon">✔</div>
+    <h3>Curated Quality</h3>
+    <p>Every product is hand-selected and quality-checked before listing.</p>
+  </div>
+  <div class="feature-item">
+    <div class="feature-icon">↩</div>
+    <h3>Easy Returns</h3>
+    <p>No-questions-asked returns within 30 days of purchase.</p>
+  </div>
+</div>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section">
+  <div class="container">
+    <p class="section-label">Handpicked</p>
+    <h2 class="section-title">Featured Products</h2>
+    <div class="product-grid">
+      {% for product in featured %}
+      <div class="product-card">
+        <a href="{% url 'product_details' product.slug %}">
+          <div class="product-card-img">
+            {% if product.image %}
+              <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" />
+            {% else %}
+              <div class="product-card-img-placeholder">✦</div>
+            {% endif %}
+          </div>
+        </a>
+        <div class="product-card-body">
+          <span class="product-cat">{{ product.category.name }}</span>
+          <a href="{% url 'product_details' product.slug %}">
+            <h3 class="product-name">{{ product.name }}</h3>
+          </a>
+          <div class="product-price">₹{{ product.price }}</div>
+          {% if not product.in_stock %}<div class="product-stock-out">Out of stock</div>{% endif %}
+        </div>
+        <div class="product-card-actions">
+          {% if product.in_stock %}
+            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary btn-sm btn-full">Add to Cart</a>
+          {% else %}
+            <button class="btn btn-outline btn-sm btn-full" disabled style="opacity:.4;cursor:not-allowed;">Unavailable</button>
+          {% endif %}
+        </div>
+      </div>
+      {% empty %}
+      <p style="color:var(--text-muted); grid-column: 1/-1; text-align:center; padding: 3rem 0;">
+        No products yet. <a href="/admin" style="color:var(--accent)">Add some in admin →</a>
+      </p>
+      {% endfor %}
+    </div>
+    {% if featured %}
+    <div style="text-align:center; margin-top:3rem;">
+      <a href="{% url 'product_list' %}" class="btn btn-outline">View All Products</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

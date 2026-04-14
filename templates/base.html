@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Ecommerce Shop{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'css/product.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'css/orders.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="{% url 'home' %}" class="nav-logo">Dkp Shop</a>
+    <ul class="nav-links">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'product_list' %}">Shop</a></li>
+      {% if user.is_authenticated %}
+        <li><a href="{% url 'order_history' %}">Orders</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'register' %}">Register</a></li>
+      {% endif %}
+    </ul>
+    {% if user.is_authenticated %}
+    <a href="{% url 'cart' %}" class="nav-cart-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Cart
+      {% if cart_count > 0 %}<span class="cart-badge">{{ cart_count }}</span>{% endif %}
+    </a>
+    {% endif %}
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="{% url 'home' %}">Home</a>
+  <a href="{% url 'product_list' %}">Shop</a>
+  {% if user.is_authenticated %}
+    <a href="{% url 'cart' %}">Cart {% if cart_count > 0 %}({{ cart_count }}){% endif %}</a>
+    <a href="{% url 'order_history' %}">My Orders</a>
+    <a href="{% url 'logout' %}">Logout</a>
+  {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'register' %}">Register</a>
+  {% endif %}
+</div>
+
+{% if messages %}
+<div class="messages-wrap">
+  {% for message in messages %}
+  <div class="msg msg-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<main>{% block content %}{% endblock %}</main>
+
+<footer>
+  <p>&copy; 2026 Dkp Shop &mdash; Premium E-Commerce</p>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+</script>
+</body>
+</html>

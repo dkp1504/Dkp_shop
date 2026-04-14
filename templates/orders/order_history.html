@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}My Orders — Dkp Shop{% endblock %}
+{% block extra_css %}
+{% endblock %}
+{% block content %}
+<div class="container section">
+  <div class="page-header" style="padding-top:1rem;">
+    <h1>My Orders</h1>
+    <p>{{ orders.count }} order{{ orders.count|pluralize }}</p>
+  </div>
+
+  {% if orders %}
+    {% for order in orders %}
+    <div class="order-card">
+      <div class="order-card-header">
+        <div>
+          <p class="order-id">Order #{{ order.id }}</p>
+          <p class="order-meta">{{ order.created|date:"d M Y, H:i" }} &nbsp;·&nbsp; {{ order.city }}</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;">
+          <span class="badge badge-{{ order.status }}">{{ order.get_status_display }}</span>
+          <span class="order-total">₹{{ order.total }}</span>
+        </div>
+      </div>
+      <div class="order-card-body">
+        <div class="order-items-list">
+          {% for item in order.items.all %}
+          <div class="order-items-row">
+            <span>{{ item.product_name }} × {{ item.quantity }}</span>
+            <span>₹{{ item.subtotal }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        <div style="margin-top:1rem;">
+          {% if order.paid %}
+            <span style="font-size:12px;color:var(--success);">✓ Paid</span>
+          {% else %}
+            <span style="font-size:12px;color:var(--danger);">✗ Unpaid</span>
+          {% endif %}
+          &nbsp;·&nbsp;
+          <span style="font-size:12px;color:var(--text-muted);">{{ order.address|truncatechars:50 }}</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div style="text-align:center;padding:5rem 0;">
+      <div style="font-size:3rem;color:var(--border);margin-bottom:1.5rem;">◻</div>
+      <h2 style="font-family:var(--font-display);font-size:2rem;font-weight:300;margin-bottom:0.5rem;">No orders yet</h2>
+      <p style="color:var(--text-muted);margin-bottom:2rem;">You haven't placed any orders. Start shopping!</p>
+      <a href="{% url 'product_list' %}" class="btn btn-primary">Shop Now</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
