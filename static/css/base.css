@@ -155,7 +155,8 @@ body {
     text-decoration: none;
     border-radius: var(--radius); /* 8px suggested */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
+    cursor: pointer ;
+    
 }
 
 /* Primary Button (SHOP NOW) */
@@ -187,7 +188,8 @@ body {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
 }
-    .btn-danger {
+  
+.btn-danger {
       background: transparent; color: var(--danger); border-color: var(--danger);
     }
     .btn-danger:hover { background: rgba(224,82,82,.1); }

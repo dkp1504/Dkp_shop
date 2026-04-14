@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, Category
 
 def home(request):
@@ -28,3 +28,7 @@ def product_details(request, slug):
     product = get_object_or_404(Product, slug=slug, available=True)
     related = Product.objects.filter(category=product.category, available=True).exclude(id=product.id)[:4]
     return render(request, 'products/product_details.html', {'product': product, 'related': related})
+
+
+def shop(request):
+    return redirect('product')

@@ -1,58 +1,120 @@
-/* home  */
-  .hero {
+
+  /* --- HERO SECTION MODIFIED --- */
+.hero {
     min-height: 88vh;
-    display: flex; align-items: center;
+    display: flex; 
+    align-items: center;
     background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
-    position: relative; overflow: hidden;
-  }
-  .hero::before {
+    position: relative; 
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Pseudo-element ko hamesha peeche rakhein */
+.hero::before {
     content: '';
-    position: absolute; inset: 0;
+    position: absolute; 
+    inset: 0;
     background: radial-gradient(ellipse 60% 60% at 80% 50%, rgba(201,169,110,0.06) 0%, transparent 70%);
-  }
-  .hero-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    align-items: center; gap: 4rem;
-    max-width: 1280px; margin: 0 auto; padding: 0 2rem;
+    z-index: -1; 
+}
+
+/* Grid layout aur clickability fix */
+.hero-grid {
+    display: grid; 
+    grid-template-columns: 1fr 1fr;
+    align-items: center; 
+    gap: 4rem;
+    max-width: 1280px; 
+    margin: 0 auto; 
+    padding: 0 2rem;
     width: 100%;
-  }
-  .hero-tag {
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 1.5rem;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .hero-tag::before { content: ''; width: 30px; height: 1px; background: var(--accent); }
-  .hero h1 {
+    position: relative;
+    z-index: 2;
+    /* Isse grid khud clicks block nahi karega */
+    pointer-events: none; 
+}
+
+/* Grid ke andar ke divs click accept karenge */
+.hero-grid > div {
+    pointer-events: auto;
+}
+
+.hero-tag {
+    font-size: 10px; 
+    letter-spacing: 0.2em; 
+    text-transform: uppercase;
+    color: var(--accent); 
+    margin-bottom: 1.5rem;
+    display: flex; 
+    align-items: center; 
+    gap: 10px;
+}
+.hero-tag::before { content: ''; width: 30px; height: 1px; background: var(--accent); }
+
+.hero h1 {
     font-family: var(--font-display);
     font-size: clamp(3rem, 6vw, 5.5rem);
-    font-weight: 300; line-height: 1.05;
+    font-weight: 300; 
+    line-height: 1.05;
     letter-spacing: 0.02em;
     margin-bottom: 1.5rem;
-  }
-  .hero h1 em { color: var(--accent); font-style: italic; }
-  .hero-desc { color: var(--text-muted); max-width: 420px; line-height: 1.8; margin-bottom: 2.5rem; }
-  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .hero-visual {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
-    position: relative;
-  }
-  .hero-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 1.5rem; text-align: center;
-    animation: floatCard 4s ease-in-out infinite;
-  }
-  .hero-card:nth-child(2) { animation-delay: -2s; margin-top: 2rem; }
-  .hero-card:nth-child(3) { animation-delay: -1s; }
-  .hero-card:nth-child(4) { animation-delay: -3s; margin-top: 2rem; }
-  .hero-card-icon { font-size: 2rem; margin-bottom: 8px; }
-  .hero-card h3 { font-family: var(--font-display); font-size: 1rem; font-weight: 400; }
-  .hero-card p { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-  @keyframes floatCard {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
+}
+.hero h1 em { color: var(--accent); font-style: italic; }
 
-  .features { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); }
+.hero-desc { 
+    color: var(--text-muted); 
+    max-width: 420px; 
+    line-height: 1.8; 
+    margin-bottom: 2.5rem; 
+}
+
+/* Buttons Container Priority */
+.hero-actions { 
+    display: flex; 
+    gap: 1rem; 
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 999; /* Priority high rakhi hai */
+    pointer-events: auto !important;
+}
+
+.btn {
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 1000;
+    cursor: pointer !important;
+}
+
+/* Visuals (Images) Clicks ko block nahi karenge */
+.hero-visual {
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 1rem;
+    position: relative;
+    pointer-events: none; /* Parda hataya gaya */
+}
+
+.hero-card {
+    background: var(--surface); 
+    border: 1px solid var(--border);
+    border-radius: 6px; 
+    padding: 1.5rem; 
+    text-align: center;
+    pointer-events: auto; /* Card khud clickable rahe */
+    animation: floatCard 4s ease-in-out infinite;
+}
+
+/* Animation Delays */
+.hero-card:nth-child(2) { animation-delay: -2s; margin-top: 2rem; }
+.hero-card:nth-child(3) { animation-delay: -1s; }
+.hero-card:nth-child(4) { animation-delay: -3s; margin-top: 2rem; }
+
+.hero-card-icon { font-size: 2rem; margin-bottom: 8px; }
+.hero-card h3 { font-family: var(--font-display); font-size: 1rem; font-weight: 400; }
+.hero-card p { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+.features { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); }
   .feature-item { background: var(--bg); padding: 2.5rem 2rem; }
   .feature-icon { font-size: 1.5rem; margin-bottom: 1rem; }
   .feature-item h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 400; margin-bottom: 6px; }
@@ -68,7 +130,12 @@
     font-weight: 300; margin-bottom: 2.5rem;
   }
 
-  @media (max-width: 900px) {
+@keyframes floatCard {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@media (max-width: 900px) {
     .hero-grid { grid-template-columns: 1fr; }
     .hero-visual { display: none; }
     .features { grid-template-columns: 1fr; }
